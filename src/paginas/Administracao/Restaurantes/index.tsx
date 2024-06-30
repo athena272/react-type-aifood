@@ -10,7 +10,7 @@ export default function AdministracaoRestaurantes() {
     useEffect(() => {
         axios.get<IRestaurante[]>('http://localhost:8000/api/v2/restaurantes/')
             .then(res => setRestaurantes(res.data))
-    }, [restaurantes])
+    }, [])
 
     const deleteRestaurante = (idToBeDeleted: number) => {
         axios.delete(`http://localhost:8000/api/v2/restaurantes/${idToBeDeleted}/`)
