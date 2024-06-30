@@ -8,29 +8,21 @@ import Restaurante from './Restaurante';
 const PaginationRestaurantes = () => {
   const [restaurantes, setRestaurantes] = useState<IRestaurante[]>([])
   const [nextLinkPage, setNextLinkPage] = useState('')
+  const [previousLinkPage, setPreviousLinkPage] = useState('')
 
-  useEffect(() => {
-    //obter restaurantes
-    axios.get<IPaginacao<IRestaurante>>('http://localhost:8000/api/v1/restaurantes/')
+  const loadData = (url: string) => {
+    axios.get<IPaginacao<IRestaurante>>(url)
       .then(res => {
         setRestaurantes(res.data.results)
         setNextLinkPage(res.data.next)
-      })
-      .catch(err => {
-        console.log(err);
-      })
-  }, [])
-
-  const seeMorePages = () => {
-    axios.get<IPaginacao<IRestaurante>>(nextLinkPage)
-      .then(res => {
-        setRestaurantes(prevState => [...prevState, ...res.data.results])
-        setNextLinkPage(res.data.next)
-      })
-      .catch(err => {
-        console.log(err);
+        setPreviousLinkPage(res.data.previous)
       })
   }
+
+  useEffect(() => {
+    //obter restaurantes
+    loadData('http://localhost:8000/api/v1/restaurantes/')
+  }, [])
 
   return (<section className={style.ListaRestaurantes}>
     <h1>Os restaurantes mais <em>bacanas</em>!</h1>
@@ -39,14 +31,18 @@ const PaginationRestaurantes = () => {
         <Restaurante restaurante={item} key={item.id} />
       )
     }
-    {
-      nextLinkPage &&
-      <button
-        onClick={seeMorePages}
-      >
-        Ver mais
-      </button>
-    }
+    <button
+      onClick={() => loadData(previousLinkPage)}
+      disabled={previousLinkPage ? false : true}
+    >
+      Página anterior
+    </button>
+    <button
+      onClick={() => loadData(nextLinkPage)}
+      disabled={nextLinkPage ? false : true}
+    >
+      Próxima página
+    </button>
   </section>)
 }
 
