@@ -1,4 +1,4 @@
-import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material'
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button } from '@mui/material'
 import axios from 'axios'
 import IRestaurante from "interfaces/IRestaurante"
 import { useEffect, useState } from "react"
@@ -10,7 +10,15 @@ export default function AdministracaoRestaurantes() {
     useEffect(() => {
         axios.get<IRestaurante[]>('http://localhost:8000/api/v2/restaurantes/')
             .then(res => setRestaurantes(res.data))
-    }, [])
+    }, [restaurantes])
+
+    const deleteRestaurante = (idToBeDeleted: number) => {
+        axios.delete(`http://localhost:8000/api/v2/restaurantes/${idToBeDeleted}/`)
+            .then(() => {
+                const listaRestaurantes = restaurantes.filter(restaurante => restaurante.id !== idToBeDeleted);
+                setRestaurantes(listaRestaurantes)
+            })
+    }
 
     return (
         <TableContainer component={Paper}>
@@ -23,6 +31,9 @@ export default function AdministracaoRestaurantes() {
                         <TableCell>
                             Editar
                         </TableCell>
+                        <TableCell>
+                            Excluir
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -33,7 +44,16 @@ export default function AdministracaoRestaurantes() {
                                     {restaurante.nome}
                                 </TableCell>
                                 <TableCell>
-                                    [ <Link to={`/admin/restaurantes/${restaurante.id}`}>EDITAR</Link>]
+                                    [ <Link to={`/admin/restaurantes/${restaurante.id}`}>EDITAR</Link> ]
+                                </TableCell>
+                                <TableCell>
+                                    <Button
+                                        variant='outlined'
+                                        color='error'
+                                        onClick={() => deleteRestaurante(restaurante.id)}
+                                    >
+                                        [ EXCLUIR ]
+                                    </Button>
                                 </TableCell>
                             </TableRow>
                         ))
