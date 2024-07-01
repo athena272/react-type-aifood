@@ -1,5 +1,5 @@
 import { TextField, Button, Typography, Box } from "@mui/material";
-import axios from "axios";
+import http from 'http/index'
 import IRestaurante from "interfaces/IRestaurante";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -10,7 +10,7 @@ export default function FormRestaurante() {
 
     useEffect(() => {
         if (params.id) {
-            axios.get<IRestaurante>(`http://localhost:8000/api/v2/restaurantes/${params.id}/`)
+            http.get<IRestaurante>(`v2/restaurantes/${params.id}/`)
                 .then(res => setNomeRestaurante(res.data.nome))
         }
     }, [params])
@@ -19,19 +19,18 @@ export default function FormRestaurante() {
         ev.preventDefault()
 
         if (params.id && nomeRestaurante) {
-            axios.put(`http://localhost:8000/api/v2/restaurantes/${params.id}/`, {
+            http.put(`v2/restaurantes/${params.id}/`, {
                 nome: nomeRestaurante
             })
                 .then(() => alert(`Restaurante ${nomeRestaurante} atualizado com sucesso!`))
         }
         else {
-            axios.post('http://localhost:8000/api/v2/restaurantes/', {
+            http.post('v2/restaurantes/', {
                 nome: nomeRestaurante
             })
                 .then(() => alert(`Restaurante ${nomeRestaurante} cadastrado com sucesso!`))
         }
     }
-
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '35px' }}>
