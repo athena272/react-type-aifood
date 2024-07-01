@@ -1,9 +1,9 @@
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 import IRestaurante from 'interfaces/IRestaurante';
 import IPaginacao from 'interfaces/IPaginacao';
 import style from './ListaRestaurantes.module.scss';
 import Restaurante from './Restaurante';
+import http from 'http/index'
 
 const ListaRestaurantes = () => {
   const [restaurantes, setRestaurantes] = useState<IRestaurante[]>([])
@@ -11,7 +11,7 @@ const ListaRestaurantes = () => {
 
   useEffect(() => {
     //obter restaurantes
-    axios.get<IPaginacao<IRestaurante>>('http://localhost:8000/api/v1/restaurantes/')
+    http.get<IPaginacao<IRestaurante>>('v1/restaurantes/')
       .then(res => {
         setRestaurantes(res.data.results)
         setNextLinkPage(res.data.next)
@@ -22,7 +22,7 @@ const ListaRestaurantes = () => {
   }, [])
 
   const seeMorePages = () => {
-    axios.get<IPaginacao<IRestaurante>>(nextLinkPage)
+    http.get<IPaginacao<IRestaurante>>(nextLinkPage)
       .then(res => {
         setRestaurantes(prevState => [...prevState, ...res.data.results])
         setNextLinkPage(res.data.next)
