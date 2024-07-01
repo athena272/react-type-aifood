@@ -1,9 +1,10 @@
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 import IRestaurante from 'interfaces/IRestaurante';
 import IPaginacao from 'interfaces/IPaginacao';
 import style from './PaginationRestaurantes.module.scss';
 import Restaurante from './Restaurante';
+import http from 'http/index'
+
 
 const PaginationRestaurantes = () => {
   const [restaurantes, setRestaurantes] = useState<IRestaurante[]>([])
@@ -11,7 +12,7 @@ const PaginationRestaurantes = () => {
   const [previousLinkPage, setPreviousLinkPage] = useState('')
 
   const loadData = (url: string) => {
-    axios.get<IPaginacao<IRestaurante>>(url)
+    http.get<IPaginacao<IRestaurante>>(url)
       .then(res => {
         setRestaurantes(res.data.results)
         setNextLinkPage(res.data.next)
@@ -21,7 +22,7 @@ const PaginationRestaurantes = () => {
 
   useEffect(() => {
     //obter restaurantes
-    loadData('http://localhost:8000/api/v1/restaurantes/')
+    loadData('v1/restaurantes/')
   }, [])
 
   return (<section className={style.ListaRestaurantes}>
