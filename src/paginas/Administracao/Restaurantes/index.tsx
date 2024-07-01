@@ -1,5 +1,5 @@
 import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button } from '@mui/material'
-import axios from 'axios'
+import http from 'http/index'
 import IRestaurante from "interfaces/IRestaurante"
 import { useEffect, useState } from "react"
 import { Link } from 'react-router-dom'
@@ -8,12 +8,12 @@ export default function AdministracaoRestaurantes() {
     const [restaurantes, setRestaurantes] = useState<IRestaurante[]>([])
 
     useEffect(() => {
-        axios.get<IRestaurante[]>('http://localhost:8000/api/v2/restaurantes/')
+        http.get<IRestaurante[]>('v2/restaurantes/')
             .then(res => setRestaurantes(res.data))
     }, [])
 
     const deleteRestaurante = (idToBeDeleted: number) => {
-        axios.delete(`http://localhost:8000/api/v2/restaurantes/${idToBeDeleted}/`)
+        http.delete(`v2/restaurantes/${idToBeDeleted}/`)
             .then(() => {
                 const listaRestaurantes = restaurantes.filter(restaurante => restaurante.id !== idToBeDeleted);
                 setRestaurantes(listaRestaurantes)
@@ -52,7 +52,7 @@ export default function AdministracaoRestaurantes() {
                                         color='error'
                                         onClick={() => deleteRestaurante(restaurante.id)}
                                     >
-                                        [ EXCLUIR ]
+                                        EXCLUIR
                                     </Button>
                                 </TableCell>
                             </TableRow>
