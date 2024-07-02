@@ -11,6 +11,7 @@ function App() {
       <NavBar />
       <Banner />
       <ListaRestaurantes />
+      {/* <PaginationRestaurantes /> */}
       <Rodape />
     </>
   );
