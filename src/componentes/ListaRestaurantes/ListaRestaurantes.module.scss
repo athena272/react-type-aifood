@@ -3,20 +3,26 @@
   padding: 2rem;
 }
 
-.search__form {
+.search_form {
   display: flex;
   flex-direction: column;
   gap: 15px;
   max-width: 400px;
 
-  label {
-    font-size: 1.5rem;
-  }
+  .container_inputs {
+    display: flex;
+    gap: 40px;
 
-  input {
-    font-size: 1.125rem;
-    padding: 12px 20px;
-    border-radius: 16px;
+    label {
+      font-size: 1.5rem;
+    }
+
+    input, select {
+      font-size: 1.125rem;
+      padding: 12px 20px;
+      border-radius: 16px;
+      margin: 15px 0 0 0;
+    }
   }
 
   button {
