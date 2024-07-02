@@ -11,7 +11,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/restaurantes" element={<VitrineRestaurantes />} />
-      <Route path="/admin/restaurantes/" element={<AdminHeader />}>
+      <Route path="/admin/restaurantes" element={<AdminHeader />}>
         <Route index element={<AdministracaoRestaurantes />} />
         <Route path="novo" element={<FormRestaurante />} />
         <Route path=":id" element={<FormRestaurante />} />
