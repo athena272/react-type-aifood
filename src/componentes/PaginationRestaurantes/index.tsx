@@ -18,6 +18,7 @@ const PaginationRestaurantes = () => {
   const [previousLinkPage, setPreviousLinkPage] = useState('')
 
   const [busca, setBusca] = useState('')
+  const [ordenacao, setOrdenacao] = useState('')
 
   // agora, o carregarDados recebe opcionalmente as opções de configuração do axios
   const loadData = (url: string, options: AxiosRequestConfig = {}) => {
@@ -39,6 +40,9 @@ const PaginationRestaurantes = () => {
     if (busca) {
       options.params.search = busca
     }
+    if(ordenacao) {
+      options.params.ordering = ordenacao
+    }
     loadData('v1/restaurantes/', options)
   }
 
@@ -49,15 +53,32 @@ const PaginationRestaurantes = () => {
 
   return (<section className={styles.ListaRestaurantes}>
     <h1>Os restaurantes mais <em>bacanas</em>!</h1>
-    <form onSubmit={search} className={styles.search__form}>
-      <label htmlFor="buscar">Nome do restaurante</label>
-      <input
-        id='buscar'
-        type="text"
-        placeholder='Insira o nome do restaurante'
-        value={busca}
-        onChange={(ev) => setBusca(ev.target.value)}
-      />
+    <form onSubmit={search} className={styles.search_form}>
+      <div className={styles.container_inputs}>
+        <div>
+          <label htmlFor="buscar">Nome do restaurante</label>
+          <input
+            id='buscar'
+            type="text"
+            placeholder='Insira o nome do restaurante'
+            value={busca}
+            onChange={(ev) => setBusca(ev.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="select-ordenacao">Ordenação</label>
+          <select
+            name="select-ordenacao"
+            id="select-ordenacao"
+            value={ordenacao}
+            onChange={evento => setOrdenacao(evento.target.value)}
+          >
+            <option value="">Padrão</option>
+            <option value="id">Por ID</option>
+            <option value="nome">Por Nome</option>
+          </select>
+        </div>
+      </div>
       <button type='submit'>buscar</button>
     </form>
     {
